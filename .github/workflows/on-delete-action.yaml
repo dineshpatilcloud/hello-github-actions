@@ -1,4 +1,7 @@
 on:
+  push:
+    branches:
+      - "*"
   delete:
     branches:
       - "features-gca/*"
