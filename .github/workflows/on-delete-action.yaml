@@ -58,4 +58,4 @@ jobs:
             echo "Image Name is $imagename"
 
         - name: github details
-          uses: /.github/actions/github-details
+          uses: ./.github/actions/github-details/
