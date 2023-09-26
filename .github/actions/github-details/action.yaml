@@ -1,8 +1,0 @@
-name: 'Debug action'
-description: "Log the action's environment variables and event payload"
-branding:
-  icon: 'code'
-  color: 'yellow'
-runs:
-  using: 'node16'
-  main: 'index.js'
