@@ -1,0 +1,61 @@
+on:
+  delete:
+    branches:
+      - "features-gca/*"
+env:
+    Branch_Name: ${{ github.head_ref || github.ref_name }}
+    REGION: us-central1
+    repo-name: ${{ github.event.repository.name }}
+
+
+jobs:
+    repoDetails:
+        name: Get Repo Details
+        runs-on: GCP
+        env:
+          BRANCH: ${{ github.ref_name }}
+        steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+        - name: Get Commit Hash
+          id: commit-hash
+          shell: bash
+          run: |
+            echo "SHA-SHORT=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+        - name: Get Repo Names
+          id: repo-name
+          shell: bash
+          run: |
+            echo "REPO-NAME=$(basename $(git remote get-url origin))" >> "$GITHUB_OUTPUT"
+        - name: get branch name
+          id: branch-name
+          shell: bash
+          run: |
+            IFS='/'
+            read -a branchname <<< "$(git branch --show-current)"
+            echo "BRANCH-NAME=${branchname[1]}" >> "$GITHUB_OUTPUT"
+        outputs:
+            commit-hash: ${{ steps.commit-hash.outputs.SHA-SHORT }}
+            repo-name: ${{ steps.repo-name.outputs.REPO-NAME }}
+            branch-name: ${{ steps.branch-name.outputs.BRANCH-NAME }}
+        
+    showdetails:
+        name: "Showing Git Details"
+        runs-on: GCP
+        needs:
+        - repoDetails
+        env:
+            commithash : ${{ needs.repoDetails.outputs.commit-hash }}
+            reponame : ${{ needs.repoDetails.outputs.repo-name }}
+            imagename: ${{ needs.repoDetails.outputs.repo-name }}-${{ needs.repoDetails.outputs.branch-name }}
+        
+        steps:
+        - name: show details
+          shell: bash
+          run: |
+            echo "Commit-hash is $commithash"
+            echo "repo-name is $reponame"
+            echo "Image Name is $imagename"
+
+        - name: github details
+          uses: ./.github/actions/github-details
