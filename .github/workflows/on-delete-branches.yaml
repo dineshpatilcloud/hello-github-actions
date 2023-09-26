@@ -11,7 +11,7 @@ env:
 jobs:
     repoDetails:
         name: Get Repo Details
-        runs-on: GCP
+        runs-on: ubuntu-latest
         env:
           BRANCH: ${{ github.ref_name }}
         steps:
