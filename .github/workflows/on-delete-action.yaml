@@ -50,6 +50,8 @@ jobs:
             imagename: ${{ needs.repoDetails.outputs.repo-name }}-${{ needs.repoDetails.outputs.branch-name }}
         
         steps:
+        - name: Checkout
+          uses: actions/checkout@v3
         - name: show details
           shell: bash
           run: |
