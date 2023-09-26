@@ -58,6 +58,7 @@ jobs:
             echo "Commit-hash is $commithash"
             echo "repo-name is $reponame"
             echo "Image Name is $imagename"
+            echo "deleted branch is ${{ github.event.ref }}"
 
         - name: github details
           uses: ./.github/actions/github-details/
