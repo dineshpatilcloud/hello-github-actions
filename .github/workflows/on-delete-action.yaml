@@ -38,7 +38,7 @@ jobs:
           shell: bash
           run: |
             IFS='/'
-            read -a branchname <<< "$(git branch --show-current)"
+            read -a branchname <<< "${{ github.event.ref }}"
             echo "BRANCH-NAME=${branchname[1]}" >> "$GITHUB_OUTPUT"
         outputs:
             commit-hash: ${{ steps.commit-hash.outputs.SHA-SHORT }}
